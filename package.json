@@ -1,13 +1,19 @@
 {
-  "name": "sandbox",
+  "name": "node-static-site",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "tsc index.ts --noEmit && tsx index.ts"
   },
   "keywords": [],
   "author": "Roman Donald <romanunuose@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "tsx": "^4.19.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10"
+  }
 }
