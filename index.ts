@@ -1,39 +1,18 @@
-import * as http from "http";
 import * as fs from "fs";
 
-http.createServer((req, res) => {
-  const url = req.url as string;
+const pathToFile = process.argv[2] || '/Users/donaldroman/Downloads/Proko Portrait Drawing Fundamentals/Portrait Drawing/18_drawing_morgan_1280x720.mp4';
+const destinationPath = process.argv[3] || 'outputFile';
 
-  if (url == "/") {
-    return res.end();
-  } else if (url.endsWith("favicon.ico")) {
-    res.writeHead(404, { "content-type": "text/plain" });
-    return res.end("File not found", "utf-8");
-  }
+console.time('file operation');
+fs.readFile(pathToFile, (err, data) => {
+  if (err) throw err;
+  console.log(data);
 
-  const extension = url.split(".").at(-1);
-  const fileContent = fs.readFileSync(url.slice(1), {
-    encoding: extension === "jpg" ? null : "utf-8"
+  fs.writeFile(destinationPath, data, (err) => {
+    if (err) throw err;
+
+    console.timeEnd('file operation');
   });
 
-  res.writeHead(200, { "content-type": getMimeType(extension) });
-  res.end(fileContent);
-})
-.listen(8080, "localhost", () => {
-  console.log("Server running at http://localhost:8080");
+  console.log("New file has been created");
 });
-
-function getMimeType(extension: string | undefined) {
-  switch (extension) {
-    case "html":
-      return "text/html";
-    case "css":
-      return "text/css";
-    case "js":
-      return "text/javascript";
-    case "jpg":
-      return "image/jpeg";
-    default:
-      return "application/octet-stream";
-  }
-}
